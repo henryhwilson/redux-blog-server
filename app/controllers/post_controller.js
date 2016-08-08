@@ -26,6 +26,7 @@ export const createPost = (req, res) => {
 };
 
 export const getPosts = (req, res) => {
+  console.log('Getting posts');
   Post.find().sort('-created_at').exec((error, posts) => {
     res.json(posts.map(post => {
       return { id: post._id, title: post.title, tags: post.tags };
