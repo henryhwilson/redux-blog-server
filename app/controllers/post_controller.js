@@ -14,7 +14,7 @@ export const createPost = (req, res) => {
   post.title = cleanTitle(req.body.title);
   post.tags = req.body.tags;
   post.content = req.body.content;
-  post.author = req.user;
+  post.author = req.user._id;
   post.save()
   .then(result => {
     console.log(post);
@@ -37,10 +37,12 @@ export const getPosts = (req, res) => {
 
 export const getPost = (req, res) => {
   // Limits the response to 1 post
-  Post.find({ _id: req.params.id }).limit(1).exec((error, posts) => {
-    // Retrieve first element in array
-    const post = posts[0];
-    res.json({ id: post._id, title: post.title, tags: post.tags, content: post.content });
+  Post.findOne({ _id: req.params.id }).populate('author').exec((error, post) => {
+    if (post) {
+      res.json({ id: post._id, title: post.title, tags: post.tags, content: post.content, author: post.author });
+    } else {
+      res.json(error);
+    }
   });
 };
 
