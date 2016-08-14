@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt-nodejs';
 import mongoose, { Schema } from 'mongoose';
-import dotenv from 'dotenv';
-
-dotenv.config({ silent: true });
+// import dotenv from 'dotenv';
+//
+// dotenv.config({ silent: true });
 
 // new schema, posts w/ field
 const UserSchema = new Schema({
