@@ -28,9 +28,16 @@ export const createPost = (req, res) => {
 
 export const getPosts = (req, res) => {
   console.log('Getting posts');
-  Post.find().sort('-created_at').exec((error, posts) => {
+  Post.find()
+  .sort('-created_at')
+  .populate('author')
+  .exec((error, posts) => {
     res.json(posts.map(post => {
-      return { id: post._id, title: post.title, tags: post.tags };
+      if (post.author) {
+        return { id: post._id, title: post.title, tags: post.tags, author: post.author.full_name };
+      } else {
+        return { id: post._id, title: post.title, tags: post.tags, author: 'Anonymous' };
+      }
     }));
   });
 };
@@ -39,7 +46,11 @@ export const getPost = (req, res) => {
   // Limits the response to 1 post
   Post.findOne({ _id: req.params.id }).populate('author').exec((error, post) => {
     if (post) {
-      res.json({ id: post._id, title: post.title, tags: post.tags, content: post.content, author: post.author });
+      if (post.author) {
+        res.json({ id: post._id, title: post.title, tags: post.tags, content: post.content, author: post.author.full_name });
+      } else {
+        res.json({ id: post._id, title: post.title, tags: post.tags, content: post.content, author: 'Anonymous' });
+      }
     } else {
       res.json(error);
     }
