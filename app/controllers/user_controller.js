@@ -9,9 +9,10 @@ export const signin = (req, res, next) => {
 export const signup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
+  const fullName = req.body.full_name;
 
-  if (!email || !password) {
-    return res.status(422).send('You must provide email and password');
+  if (!email || !password || !fullName) {
+    return res.status(422).send('You must provide an email, name, and password');
   }
 
   User.findOne({ email }, (error, existingUser) => {
@@ -20,6 +21,7 @@ export const signup = (req, res, next) => {
       const user = new User();
       user.email = email;
       user.password = password;
+      user.full_name = fullName;
       user.save()
       .then(result => {
         res.send({ token: tokenForUser(user) });

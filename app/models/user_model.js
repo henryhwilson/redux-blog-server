@@ -7,6 +7,7 @@ dotenv.config({ silent: true });
 // new schema, posts w/ field
 const UserSchema = new Schema({
   email: { type: String, unique: true, lowercase: true },
+  full_name: String,
   password: String,
 });
 
@@ -41,6 +42,8 @@ UserSchema.pre('save', function beforeSave(next) {
     });
   });
 });
+
+//
 
 // note use of named function rather than arrow notation
 //  this arrow notation is lexically scoped and prevents binding scope, which mongoose relies on

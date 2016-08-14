@@ -14,6 +14,7 @@ export const createPost = (req, res) => {
   post.title = cleanTitle(req.body.title);
   post.tags = req.body.tags;
   post.content = req.body.content;
+  post.author = req.user;
   post.save()
   .then(result => {
     console.log(post);
