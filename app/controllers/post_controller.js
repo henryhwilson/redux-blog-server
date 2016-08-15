@@ -34,7 +34,7 @@ export const getPosts = (req, res) => {
   .exec((error, posts) => {
     res.json(posts.map(post => {
       if (post.author) {
-        return { id: post._id, title: post.title, tags: post.tags, author: post.author.full_name };
+        return { id: post._id, title: post.title, tags: post.tags, author: post.author.full_name, author_id: post.author._id };
       } else {
         return { id: post._id, title: post.title, tags: post.tags, author: 'Anonymous' };
       }
@@ -47,7 +47,7 @@ export const getPost = (req, res) => {
   Post.findOne({ _id: req.params.id }).populate('author').exec((error, post) => {
     if (post) {
       if (post.author) {
-        res.json({ id: post._id, title: post.title, tags: post.tags, content: post.content, author: post.author.full_name });
+        res.json({ id: post._id, title: post.title, tags: post.tags, content: post.content, author: post.author.full_name, author_id: post.author._id });
       } else {
         res.json({ id: post._id, title: post.title, tags: post.tags, content: post.content, author: 'Anonymous' });
       }

@@ -3,7 +3,7 @@ import config from '../config';
 import User from '../models/user_model';
 
 export const signin = (req, res, next) => {
-  res.send({ token: tokenForUser(req.user) });
+  res.send({ user_id: req.user._id, token: tokenForUser(req.user) });
 };
 
 export const signup = (req, res, next) => {
@@ -24,7 +24,7 @@ export const signup = (req, res, next) => {
       user.full_name = fullName;
       user.save()
       .then(result => {
-        res.send({ token: tokenForUser(user) });
+        res.send({ user_id: user._id, token: tokenForUser(user) });
       })
       .catch(createError => {
         res.json({ createError });
